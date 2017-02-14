@@ -1,0 +1,8 @@
+{
+  "name": "service-a",
+  "version": "0.1.0",
+  "dependencies": {
+    "express": "^4.14.1",
+    "request": "^2.79.0"
+  }
+}
