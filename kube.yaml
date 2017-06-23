@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: service-a
+  name: service-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: service-a
+  template:
+    metadata:
+      labels:
+        run: service-a
+    spec:
+      containers:
+      - name: service-a
+        image: stephpr/service-a
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: redis
+              key: host
+        - name: REDIS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: redis
+              key: key
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: redis
+              key: port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: service-a
+  name: service-a
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: service-a

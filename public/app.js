@@ -6,6 +6,9 @@ app.controller('MainController', function($scope, $http) {
     $scope.sayHelloToServer = function() {
         $http.get("/api?_=" + Date.now()).then(function(response) {
             $scope.messages.push(response.data);
+            $http.get("/metrics?_=" + Date.now()).then(function(response) {
+                $scope.metrics = response.data;
+            });
         });
     };
     
