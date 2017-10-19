@@ -1,4 +1,5 @@
 .git
 .gitignore
 .vscode
+chart
 node_modules
