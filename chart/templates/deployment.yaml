@@ -45,6 +45,22 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+          env:
+          - name: REDIS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: {{ template "chart.name" . }}-redis
+                key: host
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ template "chart.name" . }}-redis
+                key: port
+          - name: REDIS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "chart.name" . }}-redis
+                key: key
           livenessProbe:
             httpGet:
               path: /

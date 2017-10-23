@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "chart.name" . }}-redis
+data:
+  host: {{ .Values.references.redis.host }}
+  port: "{{ .Values.references.redis.port }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "chart.name" . }}-redis
+data:
+  key: {{ .Values.references.redis.key | b64enc }}
