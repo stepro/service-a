@@ -1,42 +1,28 @@
 version: v1
 kind: helm
 properties:
-  # build:
+  build:
     # args:
     #   arg1: value1
-    # context: .
-    # dockerfile: Dockerfile
+    context: .
+    dockerfile: Dockerfile
     # labels:
     #   label1: value1
     # target: develop
-  # builds:
-  #   service-a-sidecar1:
-  #     context: sidecar1
-  #     dockerfile: Dockerfile
-  #   service-a-sidecar2:
   run:
     # chart: chart
     values:
-      image:
-        repository: $(build.repository)
-        tag: $(build.tag)
-      references:
-        redis:
-          host: $(env.service-a.references.redis.host)
-          port: $(env.service-a.references.redis.port)
-          key: $(env.service-a.references.redis.key)
+      # image:
+      #   repository: $(build.repository)
+      #   tag: $(build.tag)
+      # development:
+      #   enabled: true
+      # references:
+      #   redis:
+      #     host: $(env.service-a.references.redis.host)
+      #     port: $(env.service-a.references.redis.port)
+      #     key: $(env.service-a.references.redis.key)
   expose:
     service-a:
       # service: service-a
       # port: 80
-configurations:
-  develop:
-    run:
-      values:
-        command: ["npm", "run", "watch"]
-  develop.debug:
-    run:
-      values:
-        ports:
-          debug: 9229:9229
-        command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]

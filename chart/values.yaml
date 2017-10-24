@@ -6,6 +6,10 @@ image:
   repository: stephpr/service-a
   tag: latest
   pullPolicy: IfNotPresent
+development:
+  enabled: false
+  debugPort: 9229
+  command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
   syncTarget: /app
 service:
   name: service-a

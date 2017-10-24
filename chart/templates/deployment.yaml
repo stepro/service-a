@@ -26,6 +26,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+            {{- if and .Values.development.enabled .Values.development.debugPort }}
+            - containerPort: {{ .Values.development.debugPort }}
+            {{- end }}
           env:
             - name: REDIS_HOST
               valueFrom:
@@ -42,6 +45,14 @@ spec:
                 secretKeyRef:
                   name: {{ template "chart.name" . }}-redis
                   key: key
+          {{- if .Values.development.enabled }}
+          {{- if .Values.development.command }}
+          command: {{ toJson .Values.development.command }}
+          {{- end }}
+          {{- if .Values.development.args }}
+          args: {{ toJson .Values.development.args }}
+          {{- end }}
+          {{- else }}
           livenessProbe:
             httpGet:
               path: /
@@ -50,6 +61,7 @@ spec:
             httpGet:
               path: /
               port: {{ .Values.service.internalPort }}
+          {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}

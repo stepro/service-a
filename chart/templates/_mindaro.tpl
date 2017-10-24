@@ -4,6 +4,7 @@
 Inject the Mindaro volumes.
 */}}
 {{- define "mindaro.pod.volumes" -}}
+{{- if .Values.development.enabled -}}
         - name: mindaro-docker-socket
           hostPath:
             path: /var/run/docker.sock
@@ -13,11 +14,13 @@ Inject the Mindaro volumes.
             shareName: src
             readOnly: true
 {{- end -}}
+{{- end -}}
 
 {{/*
 Inject the Mindaro init containers.
 */}}
 {{- define "mindaro.pod.initcontainers" -}}
+{{- if .Values.development.enabled -}}
         - name: mindaro-init
           image: stephpr/mindaro-init
           imagePullPolicy: Always
@@ -37,13 +40,15 @@ Inject the Mindaro init containers.
             subPath: {{ .Release.Namespace }}/{{ .Chart.Name }}
             mountPath: /src
           workingDir: /src
-          args: ["build", "-f", ".mindaro.Dockerfile", "-t", "{{ .Values.image.repository }}:{{ .Values.image.tag }}", "."]
+          args: ["build", "-f", ".mindaro/Dockerfile", "-t", "{{ .Values.image.repository }}:{{ .Values.image.tag }}", "."]
+{{- end -}}
 {{- end -}}
 
 {{/*
 Inject the Mindaro containers.
 */}}
 {{- define "mindaro.pod.containers" -}}
+{{- if .Values.development.enabled -}}
         - name: mindaro-discovery
           image: stephpr/mindaro-discovery
           imagePullPolicy: Always
@@ -73,5 +78,6 @@ Inject the Mindaro containers.
             - name: TARGET_CONTAINER
               value: {{ .Chart.Name }}
             - name: TARGET_DIR
-              value: {{ .Values.image.syncTarget }}
+              value: {{ .Values.development.syncTarget }}
+{{- end -}}
 {{- end -}}
