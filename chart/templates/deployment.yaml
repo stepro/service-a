@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "chart.name" . }}
+  name: {{ template "chart.fullname" . }}
   labels:
     app: {{ template "chart.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -15,52 +15,33 @@ spec:
         app: {{ template "chart.name" . }}
         release: {{ .Release.Name }}
     spec:
+      volumes:
+        {{ template "mindaro.pod.volumes" . }}
       initContainers:
-        - name: mindaro-init
-          image: stephpr/mindaro-init
-          imagePullPolicy: Always
-          securityContext:
-            capabilities:
-              add:
-              - "NET_ADMIN"
-          env:
-          - name: POD_BASELINE_NAMESPACE
-            value: {{ .Values.baseline }}
+        {{ template "mindaro.pod.initcontainers" . }}
       containers:
-        - name: mindaro-discovery
-          image: stephpr/mindaro-discovery
-          imagePullPolicy: Always
-          env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-        - name: mindaro-envoy
-          image: stephpr/mindaro-envoy
-          imagePullPolicy: Always
-          securityContext:
-            runAsUser: 1337
+        {{ template "mindaro.pod.containers" . }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           env:
-          - name: REDIS_HOST
-            valueFrom:
-              configMapKeyRef:
-                name: {{ template "chart.name" . }}-redis
-                key: host
-          - name: REDIS_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: {{ template "chart.name" . }}-redis
-                key: port
-          - name: REDIS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "chart.name" . }}-redis
-                key: key
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "chart.name" . }}-redis
+                  key: host
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "chart.name" . }}-redis
+                  key: port
+            - name: REDIS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "chart.name" . }}-redis
+                  key: key
           livenessProbe:
             httpGet:
               path: /

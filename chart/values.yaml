@@ -6,8 +6,10 @@ image:
   repository: stephpr/service-a
   tag: latest
   pullPolicy: IfNotPresent
+  syncTarget: /app
 service:
   name: service-a
+  logical: true
   type: ClusterIP
   externalPort: 80
   internalPort: 80
