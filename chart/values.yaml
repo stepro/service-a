@@ -8,12 +8,9 @@ image:
   pullPolicy: IfNotPresent
 development:
   enabled: false
-  debugPort: 9229
-  command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
-  syncTarget: /app
+  command: ["npm", "run", "watch"]
 service:
   name: service-a
-  logical: true
   type: ClusterIP
   externalPort: 80
   internalPort: 80

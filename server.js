@@ -22,7 +22,7 @@ app.get('/api', function (req, res) {
         uri: 'http://service-b',
         headers: contextful.from(req)
     }, function (error, response, body) {
-        res.send('Hello from John\'s service A container ' + os.hostname() + ' and ' + body);
+        res.send('Hello from service A container ' + os.hostname() + ' and ' + body);
     });
 });
 

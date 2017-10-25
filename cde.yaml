@@ -1,22 +1,23 @@
 version: v1
-kind: helm
 properties:
   build:
     # args:
     #   arg1: value1
-    context: .
-    dockerfile: Dockerfile
+    context: . # default
+    dockerfile: Dockerfile # default
     # labels:
     #   label1: value1
     # target: develop
-  run:
-    # chart: chart
+  helm:
+    # chart: chart # default
     values:
+      # These are all defaults
       # image:
       #   repository: $(build.repository)
       #   tag: $(build.tag)
       # development:
       #   enabled: true
+      # For each env.chart.a.b.c, configuration a.b.c is injected by default, e.g.:
       # references:
       #   redis:
       #     host: $(env.service-a.references.redis.host)
@@ -26,3 +27,10 @@ properties:
     service-a:
       # service: service-a
       # port: 80
+configurations:
+  debug:
+    helm:
+      values:
+        development:
+          debugPort: 9229
+          command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]

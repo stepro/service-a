@@ -30,7 +30,7 @@ Inject the Mindaro init containers.
               - "NET_ADMIN"
           env:
             - name: POD_BASELINE_NAMESPACE
-              value: {{ .Values.baseline }}
+              value: {{ .Values.development.baseline }}
         - name: mindaro-build
           image: docker
           volumeMounts:
@@ -75,9 +75,5 @@ Inject the Mindaro containers.
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: TARGET_CONTAINER
-              value: {{ .Chart.Name }}
-            - name: TARGET_DIR
-              value: {{ .Values.development.syncTarget }}
 {{- end -}}
 {{- end -}}

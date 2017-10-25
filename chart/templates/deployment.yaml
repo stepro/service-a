@@ -14,6 +14,16 @@ spec:
       labels:
         app: {{ template "chart.name" . }}
         release: {{ .Release.Name }}
+        {{- if .Values.development.enabled }}
+        mindaro.io/target-container: {{ .Chart.Name }}
+        {{- if .Values.development.publicPort }}
+        mindaro.io/public-port: {{ .Values.development.publicPort }}
+        {{- end }}
+        {{- end }}
+      annotations:
+        {{- if .Values.development.syncTarget }}
+        mindaro.io/sync-target: {{ .Values.development.syncTarget }}
+        {{- end }}
     spec:
       volumes:
         {{ template "mindaro.pod.volumes" . }}
@@ -30,21 +40,16 @@ spec:
             - containerPort: {{ .Values.development.debugPort }}
             {{- end }}
           env:
-            - name: REDIS_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ template "chart.name" . }}-redis
-                  key: host
-            - name: REDIS_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ template "chart.name" . }}-redis
-                  key: port
-            - name: REDIS_KEY
+            {{- $root := . }}
+            {{- range $ref, $values := .Values.references }}
+            {{- range $key, $value := $values }}
+            - name: {{ $ref | upper }}_{{ $key | upper }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "chart.name" . }}-redis
-                  key: key
+                  name: {{ template "chart.name" $root }}-{{ $ref }}
+                  key: {{ $key }}
+            {{- end }}
+            {{- end }}
           {{- if .Values.development.enabled }}
           {{- if .Values.development.command }}
           command: {{ toJson .Values.development.command }}
@@ -52,7 +57,8 @@ spec:
           {{- if .Values.development.args }}
           args: {{ toJson .Values.development.args }}
           {{- end }}
-          {{- else }}
+          {{- end }}
+          {{- if not .Values.development.enabled }}
           livenessProbe:
             httpGet:
               path: /
