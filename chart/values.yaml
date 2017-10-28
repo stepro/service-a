@@ -6,14 +6,12 @@ image:
   repository: stephpr/service-a
   tag: latest
   pullPolicy: IfNotPresent
-development:
-  enabled: false
-  command: ["npm", "run", "watch"]
 service:
   name: service-a
   type: ClusterIP
   externalPort: 80
   internalPort: 80
+  singleton: true
 ingress:
   enabled: false
   # Used to create an Ingress record.
@@ -38,3 +36,16 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+mindaro: # will be auto-injected based on information in mindaro.yaml and current context
+  baseline: # set for isolated namespaces that have a baseline namespace
+  clientID: STEPHPR-MAC
+  build:
+    args:
+    labels:
+  entrypoint:
+  command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
+  httpPorts:
+  - 80
+  syncTarget:
+  keepHealthChecks: false
+  terminateGracefully: false
