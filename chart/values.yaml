@@ -16,7 +16,7 @@ ingress:
   enabled: false
   # Used to create an Ingress record.
   hosts:
-    - chart-example.local
+    - service-a
   annotations:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
@@ -36,16 +36,16 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
-mindaro: # will be auto-injected based on information in mindaro.yaml and current context
-  baseline: # set for isolated namespaces that have a baseline namespace
-  clientID: STEPHPR-MAC
+mindaro: # will be auto-injected based on context and properties in mindaro.yaml
+  baseline: # is set when installing to a namespace with a baseline namespace
+  clientID: STEPHPR-MAC # is set to a client ID that globally identifies the machine
   build:
     args:
     labels:
+    target:
   entrypoint:
   command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
-  httpPorts:
-  - 80
+  nonHttpPorts: []
   syncTarget:
   keepHealthChecks: false
   terminateGracefully: false
