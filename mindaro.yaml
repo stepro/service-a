@@ -1,39 +1,58 @@
 version: v1
 properties:
-  build:
-    # args:
-    #   arg1: value1
-    context: . # default
-    dockerfile: Dockerfile # default
-    # labels:
-    #   label1: value1
-    # target: develop
-  # entrypoint: # default is the default entrypoint
-  command: ["npm", "run", "watch"] # default is the default command
-  # nonHttpPorts: # default is none, tells Envoy to not proxy certain ports
-  # syncTarget: # default is automatically determined
-  # keepHealthChecks: false # default, typically disabled for development
-  # terminateGracefully: false # default, typically just kill it during development
+  # Simple case: single image
+  image:
+    # Either build an image from source...
+    build:
+      # args:
+      #   arg1: value1
+      context: . # default
+      dockerfile: Dockerfile # default
+      # noSync: false # do not allow automatic syncTarget determination
+      # labels:
+      #   label1: value1
+      # target: develop
+    # ...or use an existing repository and tag
+    # repository: myacr.azurecr.io/foo/bar
+    # tag: baz # regardless of this tag, the instrumented tag will be unique
+    # Remaining properties relate to dev instrumentation of the image
+    # entrypoint: # default is the image's default entrypoint
+    command: ["npm", "run", "watch"] # default is the image's default command
+    # nonHttpPorts: # default is [], can be used to disable Envoy routing
+    # syncTarget: # default is automatically determined for images built from source
+    # keepHealthChecks: false # default, typically disabled for development
+    # terminateGracefully: false # default, typically kill it during development
+  # More complex case: multiple named images
+  images:
+    image2:
+    image3:
+  secrets:
+    provider: mindaro # by default, we'll magically store secrets for you
   helm:
     # Which helm chart should be installed?
     chart: chart # default
-    # What values files shoud be processed beyond values.yaml?
+    # What additional values files should be processed beyond values.yaml?
     # values:
     # - values.dev.yaml
     # What additional inline values should be supplied?
+    # Reference instrumented image repositories and tags:
+    #  - $(image.repository)
+    #  - $(image.tag)
+    #  - $(image.image2.repository)
+    #  - $(image.image3.tag)
+    # Reference secrets:
+    #  - $(secrets.my.global.key)
+    #  - $(env.mychart.secrets)
     set:
+      image:
+        repository: $(image.repository) # default
+        tag: $(image.tag) # default
+        pullPolicy: Never # default since image will be local
       ingress:
         enabled: true
-    # How should development context be mapped to chart values?
-    contextMap:
-      # What values specify the image repository and tag?
-      image:
-        repository: image.repository # default, set to "node.local/namespace/chart-name"
-        tag: image.tag # default, set to a unique session ID, e.g. f25de591b1a9
-        pullPolicy: image.pullPolicy # default, set to "Never" since image will be local
-      replicas: replicaCount # default, set to 0 initially, then to actual value
-      secrets: secrets # default, will provide any stored secrets as values
-    wait: false # default, maps to the --wait option on helm install
+      secrets: $(secrets.service-a) # default to "secrets.<chart-name>"
+    # Maps to the --wait option on helm install
+    wait: false # default
   # How should we respond to local file changes?
   # Rules are processed in reverse order of specification, so
   # they should be defined from most general to most specific.
@@ -45,6 +64,7 @@ properties:
 # Additional named configurations that override properties above
 configurations:
   debug: # Applied if you call "mindaro -c debug up"
-    command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
+    image:
+      command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
   debug.vs: # Applied if you call "mindaro -c debug.vs up", also applies "debug" config
   debug.vs.code: # Applied if you call "mindaro -c debug.vs.code up", also applies "debug.vs", "debug" configs
