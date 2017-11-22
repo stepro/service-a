@@ -1,11 +1,11 @@
-# version: v1 # default - affects remaining schema
-# workload: service # default; also job, function, etc. - affects remaining schema
-# properties:
+version: v1 # affects remaining schema
+workload: helm-chart # affects remaining schema
+properties:
   # Simple case: single image and container
   # image:
     # credentials: # to access the base image for build or the desired image
-      # username: $(env.global.registryUserName) # default, if it is present
-      # password: $(env.global.registryPassword) # default, if it is present
+      # username: $(secrets.global.registry.username) # default, if it is present
+      # password: $(secrets.global.registry.password) # default, if it is present
     # Build an image from source...
     # build:
       # args: # optional
@@ -24,7 +24,7 @@
     command: ["npm", "run", "watch"] # default is the image's default command
     # nonHttpPorts: # default is none, can be used to disable Envoy routing
     # syncTarget: # default is automatically determined for images built from source
-    # keepHealthChecks: false # default, typically disabled for development
+    # healthChecks: false # default, typically not desirable for development
     # terminateGracefully: false # default, typically kill it during development
   # More complex case: multiple named images and containers
   # images:
@@ -37,13 +37,13 @@
   #     image: image2
   #   container3:
   #     image: image3
-  helm: # may be other deployment mechanisms in the future
-    # Which helm chart should be installed?
+  helm:
+    # Which helm chart (directory) should be installed?
     # chart: chart # default
     # What additional values files should be processed beyond values.yaml?
-    # values:
+    # values: # optional
     # - values.dev.yaml
-    # What additional inline values should be supplied?
+    # What additional values should be set?
     # Reference container image repositories and tags:
     #  - $(container.image.repository)
     #  - $(container.image.tag)
@@ -53,26 +53,29 @@
     #  - $(secrets.global.servicePrincipalId)
     # Reference chart-specific secrets:
     #  - $(secrets.chart.redis.key)
-    # Reference instance-specific secrets:
-    #  - $(secrets.my-service-a.mongo.connectionString)
+    # Reference release-specific secrets:
+    #  - $(secrets.releases.fluffy-penguin.mongo.connectionString)
     set:
-      image:
-        repository: $(container.image.repository) # default
-        tag: $(container.image.tag) # default
-        pullPolicy: Never # default
+      # image:
+      #   repository: $(container.image.repository) # default
+      #   tag: $(container.image.tag) # default
+      #   pullPolicy: Never # default
       ingress:
         enabled: true
-      secrets: $(secrets.chart) # default
+        annotations:
+          kubernetes.io/ingress.class: mindaro # creates a https dev endpoint
+      # secrets: $(secrets.chart) # default
     # Maps to the --wait option on helm install
-    wait: false # default
+    # wait: false # default
   # How should we respond to local file changes?
   # Rules are processed in reverse order of specification, so
   # they should be defined from most general to most specific.
-  # Dockerfile and ignore file changes always trigger "rebuild".
   # Any changes to the chart folder always trigger "reinstall".
+  # Any changes to the Dockerfile or ignore files always trigger "rebuild".
+  # All other changes will default to triggering a simple file "sync".
   watch:
   - pattern: "package.json"
-    action: rebuild # default is "sync", allowed to be "ignore", "sync" or "rebuild"
+    action: rebuild # default is "sync", allowed to be "ignore", "sync", "rebuild" or "reinstall"
 # Additional named configurations that override any of the properties above
 configurations:
   debug: # Applied if you call "mindaro -c debug up"
