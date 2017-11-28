@@ -36,6 +36,11 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+secrets:
+  redis:
+    host: unspecified
+    port: 6379
+    key: unspecified
 mindaro: # will be auto-injected based on context and properties in mindaro.yaml
   baseline: # is set when installing to a namespace with a baseline namespace
   clientID: STEPHPR-MAC # is set to a client ID that globally identifies the machine
