@@ -1,31 +1,25 @@
 {
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
-    "version": "0.1.0",
-    "linux": {
-        "command": "/bin/bash"
-    },
-    "windows": {
-        "command": "C:\\Program Files\\git\\bin\\bash.exe"
-    },
-    "suppressTaskName": true,
-    "showOutput": "always",
+    "version": "2.0.0",
     "tasks": [
         {
-            "taskName": "bake",
-            "args": ["../k8s-l5d/scripts/bake.sh", "stephpr/service-a"]
+            "type": "npm",
+            "script": "debug",
+            "problemMatcher": [],
+            "isBackground": true
         },
         {
-            "taskName": "deploy",
-            "args": ["../k8s-l5d/scripts/deploy.sh", "service-a", "stephpr/service-a"]
-        },
-        {
-            "taskName": "ci",
-            "args": ["../k8s-l5d/scripts/bake.sh", "stephpr/service-a", "Release"]
-        },
-        {
-            "taskName": "cd",
-            "args": ["../k8s-l5d/scripts/deploy.sh", "service-a", "stephpr/service-a", "Release"]
+            "label": "mindaro: up",
+            "type": "process",
+            "command": "mindaro",
+            "args": [
+                "-c",
+                "debug",
+                "up"
+            ],
+            "problemMatcher": [],
+            "isBackground": true
         }
     ]
 }
