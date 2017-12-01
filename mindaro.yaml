@@ -1,95 +1,23 @@
-workload: helm-chart # affects remaining schema
+workload: helm-release
 properties:
-  # Simple case: single image, single container
-  # image:
-    # Build an image from source...
-    # build:
-      # args: # optional
-      #   arg1: value1
-      # context: . # default
-      # dockerfile: Dockerfile # default
-      # labels: # optional
-      #   label1: value1
-      # target: develop # optional
-    # ...or identify an existing image
-    # repository: myacr.azurecr.io/foo/bar
-    # tag: baz
-  container:
-    # image: # default is the single image
-    # entrypoint: # default is the image's entrypoint
-    command: ["npm", "run", "watch"] # default is the image's command
-    # What ports should be tunneled to from the local machine?
-    # ports: # default is list of ports from the container spec
-    # - "3000" # expose port 3000 on a random local port
-    # - "8080:80" # expose port 80 on local port 8080
-    # - ":6060/udp" # explicitly do NOT tunnel to UDP port 6060
-    # nonHttpPorts: # default is none, disables Envoy routing for non-HTTP ports
-    # syncTarget: # default is automatically determined for images built from source
-  # More complex cases: multiple named images and containers
-  # images:
-  #   web:
-  #   worker:
-  # containers:
-  #   web:
-  #     image: web
-  #   worker1:
-  #     image: worker
-  #   worker2:
-  #     image: worker
-  # keepHealthChecks: false # default, typically not desirable for development
-  # terminateGracefully: false # default, typically kill it during development
-  helm:
-    # Which helm chart (directory) should be installed?
-    # chart: chart # default
-    # What additional values files should be processed beyond values.yaml?
-    # values: # optional
-    # - values.dev.yaml
-    # What additional values should be set?
-    # Reference container image repositories and tags:
-    #  - $(container.image.repository)
-    #  - $(container.image.tag)
-    #  - $(container.images.image2.repository)
-    #  - $(container.images.image3.tag)
-    # Reference environment variables (supports .env file):
-    #  - $MONGO_CONNECTION_STRING # Value or empty
-    #  - ${MONGO_CONNECTION_STRING} # Value or empty
-    #  - ${MONGO_CONNECTION_STRING:-!} # Value or error
-    #  - ${MONGO_CONNECTION_STRING:-$} # Value or existing
-    #  - ${MONGO_CONNECTION_STRING:-default} # Value or "default"
+  command: ["npm", "run", "watch"]
+  install:
+    values:
+    - .secrets.yaml
     set:
-      # image:
-      #   repository: $(container.image.repository) # default
-      #   tag: $(container.image.tag) # default
-      #   pullPolicy: Never # default
       ingress:
-        enabled: true
         annotations:
-          kubernetes.io/ingress.class: mindaro # creates a https dev endpoint
-      secrets:
-        redis:
-          host: ${REDIS_HOST:-!} # REDIS_HOST environment variable is required
-          port: ${REDIS_PORT:-$} # REDIS_PORT environment variable is optional, defaults to 6379 from values.yaml
-          key: ${REDIS_KEY:-} # REDIS_KEY environment variable is optional, defaults to empty string
-    # Maps to the --wait option on helm install
-    # wait: false # default
-  # How should we respond to local file changes once running?
-  # Rules are processed in reverse order of specification, so
-  # they should be defined from most general to most specific.
-  # Any changes to the chart folder always trigger a "reinstall" of the chart.
-  # Any changes to the Dockerfile or ignore files always trigger a "rebuild" of the image.
-  # All other changes default to triggering a simple file "sync".
-  # The other supported action is "ignore", meaning do nothing.
-  watch: # optional
-  - pattern: "package.json" # a glob pattern that matches files
-    action: rebuild
-# Additional named configurations that override any of the properties above
+          kubernetes.io/ingress.class: mindaro
+  sync:
+    enabled: true
+  tracing: true
+  routing:
+    toMainline: true
+    toSideline: true
+  skipHealthChecks: true
+  killOnTerminate: true
 configurations:
-  debug: # Applied if you call "mindaro -c debug up"
-    container:
-      command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
-      ports:
-      - "9229:9229"
-      nonHttpPorts:
-      - "9229"
-  debug.vs: # Applied if you call "mindaro -c debug.vs up", also applies "debug" config
-  debug.vscode: # Applied if you call "mindaro -c debug.vscode up", also applies "debug" config
+  debug:
+    command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
+    ports:
+    - "9229:9229"
