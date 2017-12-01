@@ -1,6 +1,8 @@
 workload: helm-release
 properties:
-  command: ["npm", "run", "watch"]
+  command: ["npm", "run", "develop", "--", "--inspect=0.0.0.0:9229", "--nolazy"]
+  ports:
+  - "9229:9229"
   install:
     values:
     - .secrets.yaml
@@ -16,8 +18,3 @@ properties:
     toSideline: true
   skipHealthChecks: true
   killOnTerminate: true
-configurations:
-  debug:
-    command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
-    ports:
-    - "9229:9229"

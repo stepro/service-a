@@ -3,19 +3,62 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
+        // Local tasks
         {
             "type": "npm",
-            "script": "debug",
+            "script": "develop",
             "problemMatcher": [],
             "isBackground": true
         },
+        // Docker tasks
+        {
+            "label": "docker: build",
+            "type": "process",
+            "command": "docker",
+            "args": [
+                "build",
+                "-t",
+                "service-a",
+                "."
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "docker: run",
+            "dependsOn": "docker: build",
+            "type": "process",
+            "command": "docker",
+            "args": [
+                "run",
+                "--name",
+                "service-a",
+                "-p",
+                "35836:80",
+                "-p",
+                "9229:9229",
+                "-e",
+                "REDIS_HOST=${env:REDIS_HOST}",
+                "-e",
+                "REDIS_PORT=${env:REDIS_PORT}",
+                "-e",
+                "REDIS_KEY=${env:REDIS_KEY}",
+                "-it",
+                "service-a",
+                "npm",
+                "run",
+                "develop",
+                "--",
+                "--inspect=0.0.0.0:9229"
+            ],
+            "problemMatcher": [],
+            "isBackground": true
+        },
+        // Mindaro tasks
         {
             "label": "mindaro: up",
             "type": "process",
             "command": "mindaro",
             "args": [
-                "-c",
-                "debug",
                 "up"
             ],
             "problemMatcher": [],
