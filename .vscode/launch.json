@@ -17,7 +17,7 @@
             "name": "docker: Attach to Process",
             "type": "node",
             "request": "attach",
-            "port": 9229,
+            "port": 39746,
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/app",
             "restart": true
@@ -27,7 +27,7 @@
             "name": "mindaro: Attach to Process",
             "type": "node",
             "request": "attach",
-            "port": 9229,
+            "port": 34839,
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/app",
             "restart": true

@@ -33,9 +33,9 @@
                 "--name",
                 "service-a",
                 "-p",
-                "35836:80",
+                "37857:80",
                 "-p",
-                "9229:9229",
+                "39746:9229",
                 "-e",
                 "REDIS_HOST=${env:REDIS_HOST}",
                 "-e",
@@ -59,7 +59,14 @@
             "type": "process",
             "command": "mindaro",
             "args": [
-                "up"
+                "up",
+                "-p",
+                "34839:9229",
+                "npm",
+                "run",
+                "develop",
+                "--",
+                "--inspect=0.0.0.0:9229"
             ],
             "problemMatcher": [],
             "isBackground": true
