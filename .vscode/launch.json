@@ -6,6 +6,21 @@
     "configurations": [
         // Local launch settings
         {
+            // Illustrates launch style debugging model
+            "name": "Launch Process",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "develop",
+                "--",
+                "--inspect-brk"
+            ],
+            "port": 9229
+        },
+        {
+            // Illustrates attach/detach debugging model
             "name": "Attach to Process",
             "type": "node",
             "request": "attach",
@@ -14,6 +29,41 @@
         },
         // Docker launch settings
         {
+            // Illustrates launch style debugging model
+            "name": "docker: Launch Process",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "docker: build",
+            "runtimeExecutable": "docker",
+            "runtimeArgs": [
+                "run",
+                "--name",
+                "service-a",
+                "-p",
+                "37857:80",
+                "-p",
+                "39746:9229",
+                "-e",
+                "REDIS_HOST=${env:REDIS_HOST}",
+                "-e",
+                "REDIS_PORT=${env:REDIS_PORT}",
+                "-e",
+                "REDIS_KEY=${env:REDIS_KEY}",
+                "service-a",
+                "npm",
+                "run",
+                "develop",
+                "--",
+                "--inspect=0.0.0.0:9229",
+                "--inspect-brk"
+            ],
+            "port": 39746,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/app"
+        },
+        {
+            // Illustrates attach/detach debugging model
+            // NOTE: no synchronization of files here
             "name": "docker: Attach to Process",
             "type": "node",
             "request": "attach",
@@ -24,6 +74,30 @@
         },
         // Mindaro launch settings
         {
+            // Illustrates standalone launch style debugging model
+            "name": "mindaro: Launch Process",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "mindaro: build",
+            "runtimeExecutable": "mindaro",
+            "runtimeArgs": [
+                "exec",
+                "-p",
+                "34839:9229",
+                "npm",
+                "run",
+                "develop",
+                "--",
+                "--inspect=0.0.0.0:9229",
+                "--inspect-brk"
+            ],
+            "port": 34839,
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/app"
+        },
+        {
+            // Illustrates attach/detach debugging model
+            // NOTE: includes synchronization of files
             "name": "mindaro: Attach to Process",
             "type": "node",
             "request": "attach",

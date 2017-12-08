@@ -5,6 +5,7 @@
     "tasks": [
         // Local tasks
         {
+            // Supports attach/detach debugging model
             "type": "npm",
             "script": "develop",
             "problemMatcher": [],
@@ -12,7 +13,36 @@
         },
         // Docker tasks
         {
+            // Simulates "up" behavior (kill existing container)
+            "label": "docker: rm",
+            "type": "shell",
+            "command": "docker",
+            "osx": {
+                "args": [
+                    "rm",
+                    "-f",
+                    "service-a",
+                    "||",
+                    "echo",
+                    "-n"
+                ]
+            },
+            "windows": {
+                "args": [
+                    "rm",
+                    "-f",
+                    "service-a",
+                    "|",
+                    "echo",
+                    ".>nul"
+                ]
+            },
+            "problemMatcher": []
+        },
+        {
+            // Simulates "up" behavior (build image)
             "label": "docker: build",
+            "dependsOn": "docker: rm",
             "type": "process",
             "command": "docker",
             "args": [
@@ -24,6 +54,7 @@
             "problemMatcher": []
         },
         {
+            // Supports attach/detach debugging model
             "label": "docker: run",
             "dependsOn": "docker: build",
             "type": "process",
@@ -55,11 +86,24 @@
         },
         // Mindaro tasks
         {
+            // This is eventually done automatically by the extension
             "label": "mindaro: up",
             "type": "process",
             "command": "mindaro",
             "args": [
                 "up",
+                "--daemon"
+            ],
+            "problemMatcher": [],
+            "isBackground": true
+        },
+        {
+            // Supports attach/detach debugging model
+            "label": "mindaro: exec npm run develop",
+            "type": "process",
+            "command": "mindaro",
+            "args": [
+                "exec",
                 "-p",
                 "34839:9229",
                 "npm",
