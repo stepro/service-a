@@ -63,7 +63,6 @@
             "name": "mindaro: Launch Process",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "mindaro: build",
             "runtimeExecutable": "mindaro",
             "runtimeArgs": [
                 "exec",
