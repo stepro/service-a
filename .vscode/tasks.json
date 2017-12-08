@@ -13,7 +13,6 @@
         },
         // Docker tasks
         {
-            // Simulates "up" behavior (kill existing container)
             "label": "docker: rm",
             "type": "shell",
             "command": "docker",
@@ -40,7 +39,6 @@
             "problemMatcher": []
         },
         {
-            // Simulates "up" behavior (build image)
             "label": "docker: build",
             "dependsOn": "docker: rm",
             "type": "process",
@@ -52,37 +50,6 @@
                 "."
             ],
             "problemMatcher": []
-        },
-        {
-            // Supports attach/detach debugging model
-            "label": "docker: run",
-            "dependsOn": "docker: build",
-            "type": "process",
-            "command": "docker",
-            "args": [
-                "run",
-                "--name",
-                "service-a",
-                "-p",
-                "37857:80",
-                "-p",
-                "39746:9229",
-                "-e",
-                "REDIS_HOST=${env:REDIS_HOST}",
-                "-e",
-                "REDIS_PORT=${env:REDIS_PORT}",
-                "-e",
-                "REDIS_KEY=${env:REDIS_KEY}",
-                "-it",
-                "service-a",
-                "npm",
-                "run",
-                "develop",
-                "--",
-                "--inspect=0.0.0.0:9229"
-            ],
-            "problemMatcher": [],
-            "isBackground": true
         },
         // Mindaro tasks
         {
@@ -99,7 +66,7 @@
         },
         {
             // Supports attach/detach debugging model
-            "label": "mindaro: exec npm run develop",
+            "label": "npm: develop (mindaro)",
             "type": "process",
             "command": "mindaro",
             "args": [

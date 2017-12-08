@@ -6,7 +6,6 @@
     "configurations": [
         // Local launch settings
         {
-            // Illustrates launch style debugging model
             "name": "Launch Process",
             "type": "node",
             "request": "launch",
@@ -20,7 +19,6 @@
             "port": 9229
         },
         {
-            // Illustrates attach/detach debugging model
             "name": "Attach to Process",
             "type": "node",
             "request": "attach",
@@ -29,7 +27,6 @@
         },
         // Docker launch settings
         {
-            // Illustrates launch style debugging model
             "name": "docker: Launch Process",
             "type": "node",
             "request": "launch",
@@ -61,20 +58,8 @@
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/app"
         },
-        {
-            // Illustrates attach/detach debugging model
-            // NOTE: no synchronization of files here
-            "name": "docker: Attach to Process",
-            "type": "node",
-            "request": "attach",
-            "port": 39746,
-            "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app",
-            "restart": true
-        },
         // Mindaro launch settings
         {
-            // Illustrates standalone launch style debugging model
             "name": "mindaro: Launch Process",
             "type": "node",
             "request": "launch",
@@ -96,8 +81,6 @@
             "remoteRoot": "/app"
         },
         {
-            // Illustrates attach/detach debugging model
-            // NOTE: includes synchronization of files
             "name": "mindaro: Attach to Process",
             "type": "node",
             "request": "attach",
