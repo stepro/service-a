@@ -80,7 +80,7 @@
             ],
             "port": 34839,
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app" // will need to prompt for this
+            "remoteRoot": "/app" // may need to prompt for this
         },
         {
             "name": "mindaro: Attach to Process",
@@ -89,7 +89,7 @@
             "preLaunchTask": "mindaro: up",
             "port": 34839,
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app", // will need to prompt for this
+            "remoteRoot": "/app", // may need to prompt for this
             "restart": true
         }
     ]
