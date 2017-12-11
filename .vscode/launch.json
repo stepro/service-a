@@ -52,7 +52,8 @@
                 "develop",
                 "--",
                 "--inspect=0.0.0.0:9229",
-                "--inspect-brk"
+                "--inspect-brk",
+                "--nolazy"
             ],
             "port": 39746,
             "localRoot": "${workspaceFolder}",
@@ -63,6 +64,7 @@
             "name": "mindaro: Launch Process",
             "type": "node",
             "request": "launch",
+            "preLaunchTask": "mindaro: up",
             "runtimeExecutable": "mindaro",
             "runtimeArgs": [
                 "exec",
@@ -73,19 +75,21 @@
                 "develop",
                 "--",
                 "--inspect=0.0.0.0:9229",
-                "--inspect-brk"
+                "--inspect-brk",
+                "--nolazy"
             ],
             "port": 34839,
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app"
+            "remoteRoot": "/app" // will need to prompt for this
         },
         {
             "name": "mindaro: Attach to Process",
             "type": "node",
             "request": "attach",
+            "preLaunchTask": "mindaro: up",
             "port": 34839,
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app",
+            "remoteRoot": "/app", // will need to prompt for this
             "restart": true
         }
     ]

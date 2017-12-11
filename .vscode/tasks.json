@@ -5,7 +5,6 @@
     "tasks": [
         // Local tasks
         {
-            // Supports attach/detach debugging model
             "type": "npm",
             "script": "develop",
             "problemMatcher": [],
@@ -54,7 +53,7 @@
         // Mindaro tasks
         {
             // This is eventually done automatically by the extension
-            "label": "mindaro: up",
+            "label": "mindaro: start",
             "type": "process",
             "command": "mindaro",
             "args": [
@@ -65,8 +64,21 @@
             "isBackground": true
         },
         {
-            // Supports attach/detach debugging model
+            // This instructs the daemon to ensure everything is ready
+            "label": "mindaro: up",
+            "type": "process",
+            "command": "mindaro",
+            "args": [
+                "up",
+                "--incremental",
+                "--detach"
+            ],
+            "problemMatcher": []
+        },
+        {
+            // This is the Mindaro equivalent of the "npm: develop" task
             "label": "npm: develop (mindaro)",
+            "dependsOn": "mindaro: up",
             "type": "process",
             "command": "mindaro",
             "args": [
@@ -77,7 +89,8 @@
                 "run",
                 "develop",
                 "--",
-                "--inspect=0.0.0.0:9229"
+                "--inspect=0.0.0.0:9229",
+                "--nolazy"
             ],
             "problemMatcher": [],
             "isBackground": true
