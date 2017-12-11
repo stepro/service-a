@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: stephpr/service-a
+  repository: service-a
   tag: latest
   pullPolicy: IfNotPresent
 service:
@@ -41,16 +41,3 @@ secrets:
     host: unspecified
     port: "6379"
     key: unspecified
-mindaro: # will be auto-injected based on context and properties in mindaro.yaml
-  baseline: # is set when installing to a namespace with a baseline namespace
-  clientID: STEPHPR-MAC # is set to a client ID that globally identifies the machine
-  build:
-    args:
-    labels:
-    target:
-  entrypoint:
-  command: ["npm", "run", "debug", "--", "--inspect=0.0.0.0:9229"]
-  nonHttpPorts: []
-  syncTarget:
-  keepHealthChecks: false
-  terminateGracefully: false
