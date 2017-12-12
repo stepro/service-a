@@ -4,7 +4,7 @@ build:
 container:
   httpPorts: ["*"]
 install:
-  chart: chart
+  chart: charts/service-a
   values:
   - .secrets.yaml?
   set:
@@ -19,3 +19,6 @@ configurations:
   develop:
     container:
       command: ["npm", "run", "develop"]
+      sync:
+      - "*"
+      - "!package.json"
