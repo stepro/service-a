@@ -17,6 +17,8 @@ install:
         kubernetes.io/ingress.class: mindaro
 configurations:
   develop:
+    build:
+      useGitIgnore: true
     container:
       command: ["npm", "run", "develop"]
       sync:

@@ -10,87 +10,48 @@
             "problemMatcher": [],
             "isBackground": true
         },
-        // Docker tasks
-        {
-            "label": "docker: rm",
-            "type": "shell",
-            "command": "docker",
-            "osx": {
-                "args": [
-                    "rm",
-                    "-f",
-                    "service-a",
-                    "||",
-                    "echo",
-                    "-n"
-                ]
-            },
-            "windows": {
-                "args": [
-                    "rm",
-                    "-f",
-                    "service-a",
-                    "|",
-                    "echo",
-                    ".>nul"
-                ]
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "docker: build",
-            "dependsOn": "docker: rm",
-            "type": "process",
-            "command": "docker",
-            "args": [
-                "build",
-                "-t",
-                "service-a",
-                "."
-            ],
-            "problemMatcher": []
-        },
         // Mindaro tasks
         {
             // This is eventually done automatically by the extension
-            "label": "mindaro: start",
+            // The output will appear in a "Mindaro" output window
+            "label": "mindaro: daemon",
             "type": "process",
             "command": "mindaro",
             "args": [
-                "up",
-                "--daemon"
+                "daemon"
             ],
             "problemMatcher": [],
             "isBackground": true
         },
         {
-            // This instructs the daemon to ensure everything is ready
-            "label": "mindaro: up",
+            // This runs the container as a host, enabling one-off commands
+            // It will only rebuild the image if package.json has changed
+            "label": "mindaro: host",
             "type": "process",
             "command": "mindaro",
             "args": [
-                "up",
-                "--incremental",
-                "--detach"
+                "up",      // implies a container-owned primary process
+                "--host",  // implies "--unchecked" to disable probes
+                "--detach" // daemon maintains local port connectivity
             ],
             "problemMatcher": []
         },
         {
             // This is the Mindaro equivalent of the "npm: develop" task
             "label": "npm: develop (mindaro)",
-            "dependsOn": "mindaro: up",
             "type": "process",
             "command": "mindaro",
             "args": [
-                "exec",
-                "-p",
-                "34839:9229",
+                "up",          // implies a container-owned primary process
+                "--port",
+                "34839:9229",  // ensures a specific local port for the debugger
+                "--unchecked", // required in case the debugger attaches and breaks
                 "npm",
                 "run",
                 "develop",
-                "--",
-                "--inspect=0.0.0.0:9229",
-                "--nolazy"
+                "--",                     // required to append "--" options to the script
+                "--inspect=0.0.0.0:9229", // ensures container exposes the debug port
+                "--nolazy"                // ensures the best debugging experience
             ],
             "problemMatcher": [],
             "isBackground": true

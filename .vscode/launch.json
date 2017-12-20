@@ -4,7 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        // Local launch settings
+        // Local configurations
         {
             "name": "Launch Process",
             "type": "node",
@@ -25,71 +25,40 @@
             "port": 9229,
             "restart": true
         },
-        // Docker launch settings
+        // Mindaro configurations
         {
-            "name": "docker: Launch Process",
+            // This is the Mindaro equivalent of the "Launch Process" configuration
+            "name": "Launch Process (mindaro)",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "docker: build",
-            "runtimeExecutable": "docker",
-            "runtimeArgs": [
-                "run",
-                "--name",
-                "service-a",
-                "-p",
-                "37857:80",
-                "-p",
-                "39746:9229",
-                "-e",
-                "REDIS_HOST=${env:REDIS_HOST}",
-                "-e",
-                "REDIS_PORT=${env:REDIS_PORT}",
-                "-e",
-                "REDIS_KEY=${env:REDIS_KEY}",
-                "service-a",
-                "npm",
-                "run",
-                "develop",
-                "--",
-                "--inspect=0.0.0.0:9229",
-                "--inspect-brk",
-                "--nolazy"
-            ],
-            "port": 39746,
-            "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app"
-        },
-        // Mindaro launch settings
-        {
-            "name": "mindaro: Launch Process",
-            "type": "node",
-            "request": "launch",
-            "preLaunchTask": "mindaro: up",
+            "preLaunchTask": "mindaro: host", // ensures hosting container is running
             "runtimeExecutable": "mindaro",
             "runtimeArgs": [
-                "exec",
-                "-p",
-                "34839:9229",
+                "exec",       // implies a client-owned secondary process
+                "--kill",
+                "node",       // runs equivalent of "pkill -9 node" before execution
+                "--port",
+                "34839:9229", // ensures a specific local port for the debugger
                 "npm",
                 "run",
                 "develop",
-                "--",
-                "--inspect=0.0.0.0:9229",
-                "--inspect-brk",
-                "--nolazy"
+                "--",                     // required to append "--" options to the script
+                "--inspect=0.0.0.0:9229", // ensures container exposes the debug port
+                "--inspect-brk",          // wait until debugger attaches before running
+                "--nolazy"                // ensures the best debugging experience
             ],
             "port": 34839,
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app" // may need to prompt for this
+            "remoteRoot": "/app" // depends on how the Dockerfile is written
         },
         {
-            "name": "mindaro: Attach to Process",
+            // This is the Mindaro equivalent of the "Attach to Process" configuration
+            "name": "Attach to Process (mindaro)",
             "type": "node",
             "request": "attach",
-            "preLaunchTask": "mindaro: up",
             "port": 34839,
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "/app", // may need to prompt for this
+            "remoteRoot": "/app", // depends on how the Dockerfile is written
             "restart": true
         }
     ]
