@@ -2,6 +2,7 @@
 .git
 .gitignore
 .secrets.yaml
+.vs
 .vscode
 charts
 Dockerfile
