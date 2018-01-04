@@ -30,9 +30,10 @@
             "type": "process",
             "command": "mindaro",
             "args": [
-                "up",      // implies a container-owned primary process
-                "--host",  // implies "--unchecked" to disable probes
-                "--detach" // daemon maintains local port connectivity
+                "up",            // implies a container-owned primary process
+                "--incremental", // only synchronize files if that is all needed
+                "--host",        // implies "--unchecked" to disable probes
+                "--detach"       // daemon maintains local port connectivity
             ],
             "problemMatcher": []
         },
@@ -42,10 +43,12 @@
             "type": "process",
             "command": "mindaro",
             "args": [
-                "up",          // implies a container-owned primary process
+                "up",            // implies a container-owned primary process
+                "--incremental", // only synchronize files if that is all needed
                 "--port",
-                "34839:9229",  // ensures a specific local port for the debugger
-                "--unchecked", // required in case the debugger attaches and breaks
+                "34839:9229",    // ensures a specific local port for the debugger
+                "--unchecked",   // required in case the debugger attaches and breaks
+                "--detach",      // daemon maintains local port connectivity
                 "npm",
                 "run",
                 "develop",
@@ -53,8 +56,7 @@
                 "--inspect=0.0.0.0:9229", // ensures container exposes the debug port
                 "--nolazy"                // ensures the best debugging experience
             ],
-            "problemMatcher": [],
-            "isBackground": true
+            "problemMatcher": []
         }
     ]
 }

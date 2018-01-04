@@ -56,6 +56,7 @@
             "name": "Attach to Process (mindaro)",
             "type": "node",
             "request": "attach",
+            "preLaunchTask": "npm: develop (mindaro)", // ensures process is running
             "port": 34839,
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/app", // depends on how the Dockerfile is written
