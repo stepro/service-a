@@ -11,7 +11,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "develop": "nodemon --inspect --nolazy",
+    "watch": "nodemon --inspect --nolazy",
     "start": "node server.js"
   }
 }

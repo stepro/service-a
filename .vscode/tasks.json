@@ -6,7 +6,7 @@
         // Local tasks
         {
             "type": "npm",
-            "script": "develop",
+            "script": "watch",
             "problemMatcher": [],
             "isBackground": true
         },
@@ -31,28 +31,29 @@
             "command": "mindaro",
             "args": [
                 "up",            // implies a container-owned primary process
-                "--incremental", // only synchronize files if that is all needed
-                "--host",        // implies "--unchecked" to disable probes
+                "--incremental", // if possible, only synchronize files
+                "--host",        // sleep forever, implies "--unchecked" option
                 "--detach"       // daemon maintains local port connectivity
             ],
             "problemMatcher": []
         },
         {
-            // This is the Mindaro equivalent of the "npm: develop" task
-            "label": "npm: develop (mindaro)",
+            // This is a Mindaro equivalent of the "npm: watch" task
+            // We can't generate this from our extension, but it's possible
+            "label": "npm: watch (mindaro)",
             "type": "process",
             "command": "mindaro",
             "args": [
                 "up",            // implies a container-owned primary process
-                "--incremental", // only synchronize files if that is all needed
+                "--incremental", // if possible, only synchronize files
                 "--port",
                 "34839:9229",    // ensures a specific local port for the debugger
                 "--unchecked",   // required in case the debugger attaches and breaks
                 "--detach",      // daemon maintains local port connectivity
                 "npm",
                 "run",
-                "develop",
-                "--",                     // required to append "--" options to the script
+                "watch",
+                "--",                     // required to append options to the script
                 "--inspect=0.0.0.0:9229", // ensures container exposes the debug port
                 "--nolazy"                // ensures the best debugging experience
             ],
