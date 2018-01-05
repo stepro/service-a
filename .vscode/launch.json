@@ -6,20 +6,13 @@
     "configurations": [
         // Local configurations
         {
-            "name": "Launch Process",
             "type": "node",
             "request": "launch",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run",
-                "develop",
-                "--",
-                "--inspect-brk"
-            ],
-            "port": 9229
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/server.js"
         },
         {
-            "name": "Attach to Process",
+            "name": "Attach",
             "type": "node",
             "request": "attach",
             "port": 9229,
@@ -27,20 +20,20 @@
         },
         // Mindaro configurations
         {
-            // This is the Mindaro equivalent of the "Launch Process" configuration
-            "name": "Launch Process (mindaro)",
+            // This is the Mindaro equivalent of the "Launch Program" configuration
+            "name": "Launch Program (mindaro)",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "mindaro: host", // ensures hosting container is running
+            "preLaunchTask": "mindaro: placeholder", // ensures placeholder container is running
             "runtimeExecutable": "mindaro",
             "runtimeArgs": [
                 "exec",       // implies a client-owned secondary process
                 "--kill",
                 "node",       // runs equivalent of "pkill -9 node" before execution
                 "--port",
-                "34839:9229", // ensures a specific local port for the debugger
+                "34839:9229", // allocates a specific local port for the debugger
                 "node",
-                "--",                     // required to append options to the command
+                "--",                     // distinguishes exec options from command options
                 "--inspect=0.0.0.0:9229", // ensures container exposes the debug port
                 "--inspect-brk",          // wait until debugger attaches before running
                 "--nolazy",               // ensures the best debugging experience
@@ -51,8 +44,9 @@
             "remoteRoot": "/app" // depends on how the Dockerfile is written
         },
         {
-            // This is the Mindaro equivalent of the "Attach to Process" configuration
-            "name": "Attach to Process (mindaro)",
+            // This is a Mindaro equivalent of the "Attach" configuration
+            // We won't automatically produce this using our extension
+            "name": "Attach (mindaro)",
             "type": "node",
             "request": "attach",
             "preLaunchTask": "npm: watch (mindaro)", // ensures process is running

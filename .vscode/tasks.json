@@ -24,36 +24,36 @@
             "isBackground": true
         },
         {
-            // This runs the container as a host, enabling one-off commands
-            // It will only rebuild the image if package.json has changed
-            "label": "mindaro: host",
+            // This runs the container as a placeholder, enabling one-off commands
+            "label": "mindaro: placeholder",
             "type": "process",
             "command": "mindaro",
             "args": [
                 "up",            // implies a container-owned primary process
-                "--incremental", // if possible, only synchronize files
-                "--host",        // sleep forever, implies "--unchecked" option
-                "--detach"       // daemon maintains local port connectivity
+                "--incremental", // only rebuild the image if package.json changed
+                "--placeholder", // wait for commands, implies "--no-probes" option
+                "--detach"       // the daemon will maintain local port connectivity
             ],
             "problemMatcher": []
         },
         {
             // This is a Mindaro equivalent of the "npm: watch" task
-            // We can't generate this from our extension, but it's possible
+            // We won't automatically produce this using our extension
             "label": "npm: watch (mindaro)",
             "type": "process",
             "command": "mindaro",
             "args": [
                 "up",            // implies a container-owned primary process
-                "--incremental", // if possible, only synchronize files
+                "--incremental", // only rebuild the image if package.json changed
                 "--port",
-                "34839:9229",    // ensures a specific local port for the debugger
-                "--unchecked",   // required in case the debugger attaches and breaks
-                "--detach",      // daemon maintains local port connectivity
+                "34839:9229",    // allocates a specific local port for the debugger
+                "--no-probes",   // don't die if the debugger attaches and stops code
+                "--detach",      // the daemon will maintain local port connectivity
                 "npm",
                 "run",
                 "watch",
-                "--",                     // required to append options to the script
+                "--",                     // distinguishes up options from command options
+                "--",                     // distinguishes npm options from script options
                 "--inspect=0.0.0.0:9229", // ensures container exposes the debug port
                 "--nolazy"                // ensures the best debugging experience
             ],

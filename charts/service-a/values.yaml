@@ -43,6 +43,6 @@ resources: {}
   #  memory: 128Mi
 secrets:
   redis:
-    host: unspecified
-    port: "6379"
-    key: unspecified
+    host: undefined
+    port: undefined
+    key: undefined

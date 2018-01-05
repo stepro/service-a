@@ -20,7 +20,7 @@ configurations:
     build:
       useGitIgnore: true
     container:
-      command: ["npm", "run", "watch"]
+      command: ["npm", "run", "watch", "--"]
       sync:
       - "*"
       - "!package.json"

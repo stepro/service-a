@@ -1,8 +1,8 @@
-FROM node:boron-alpine
+FROM node
 EXPOSE 80
 
 WORKDIR /app
-COPY package.json .
+COPY package.json package-lock.json* ./
 RUN npm install
 COPY . .
 
