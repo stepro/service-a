@@ -24,7 +24,7 @@
             "isBackground": true
         },
         {
-            // This ensure the container is ready to execute commands
+            // This ensures the container is ready to execute commands
             "label": "mindaro: ready",
             "type": "process",
             "command": "mindaro",
