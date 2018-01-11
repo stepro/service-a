@@ -24,7 +24,7 @@
             "name": "Launch Program (mindaro)",
             "type": "node",
             "request": "launch",
-            "preLaunchTask": "mindaro: placeholder", // ensures placeholder container is running
+            "preLaunchTask": "mindaro: ready", // ensures container is ready to execute commands
             "runtimeExecutable": "mindaro",
             "runtimeArgs": [
                 "exec",       // implies a client-owned secondary process
@@ -45,11 +45,10 @@
         },
         {
             // This is a Mindaro equivalent of the "Attach" configuration
-            // We won't automatically produce this using our extension
             "name": "Attach (mindaro)",
             "type": "node",
             "request": "attach",
-            "preLaunchTask": "npm: watch (mindaro)", // ensures process is running
+            "preLaunchTask": "watch (mindaro)", // ensures container is running
             "port": 34839,
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/app", // depends on how the Dockerfile is written
