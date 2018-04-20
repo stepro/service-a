@@ -1,0 +1,8 @@
+image:
+  repository: stephpr/service-a
+  tag: latest
+  pullPolicy: Always
+ingress:
+  enabled: true
+  hosts:
+  - www.stephpr-aks.eastus.aksapps.io

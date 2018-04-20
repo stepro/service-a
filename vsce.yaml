@@ -1,0 +1,35 @@
+kind: helm-release
+apiVersion: 1.0
+build:
+  context: .
+  dockerfile: Dockerfile
+install:
+  chart: charts/service-a
+  values:
+  - values.dev.yaml?
+  - secrets.dev.yaml?
+  set:
+    image:
+      tag: $(tag)
+      pullPolicy: Never
+    ingress:
+      enabled: true
+      hosts:
+      - $(spacePrefix)www$(domainSuffix)
+configurations:
+  develop:
+    build:
+      useGitIgnore: true
+    container:
+      syncTarget: /app
+      sync:
+      - "!**/package.json"
+      iterate:
+        processesToKill: [node]
+  develop.attach:
+    build:
+      useGitIgnore: true
+    container:
+      syncTarget: /app
+      sync:
+      - "!**/package.json"

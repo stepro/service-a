@@ -1,7 +1,7 @@
 var os = require('os');
 var express = require('express');
 var request = require('request');
-var contextful = require('./contextful');
+var propagateHeaders = require('./propagateHeaders');
 var redis = require('redis').createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, {
     auth_pass: process.env.REDIS_KEY,
     tls: {
@@ -20,7 +20,7 @@ app.get('/api', function (req, res) {
     redis.incr('requestCount');
     request({
         uri: 'http://service-b',
-        headers: contextful.from(req)
+        headers: propagateHeaders.from(req)
     }, function (error, response, body) {
         res.send('Hello from service A container ' + os.hostname() + ' and ' + body);
     });

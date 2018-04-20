@@ -35,23 +35,8 @@ spec:
             httpGet:
               path: /
               port: http
-          env:
-            {{- $root := . }}
-            {{- range $ref, $values := .Values.secrets }}
-            {{- range $key, $value := $values }}
-            - name: {{ $ref | upper }}_{{ $key | upper }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ template "service-a.fullname" $root }}-{{ $ref }}
-                  key: {{ $key }}
-            {{- end }}
-            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-{{ toYaml . | indent 8 }}
-    {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

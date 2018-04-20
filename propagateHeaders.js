@@ -1,14 +1,27 @@
+//
+// Use the code in this file to propagate specific headers from an existing
+// http.IncomingMessage object into a headers object for an outgoing request.
+//
+// Example usage given an existing 'request' http.IncomingMessage object:
+//
+//   http.get({
+//       hostname: "backend",
+//      headers: propagateHeaders.from(request, {
+//          additional: "header"
+//      })
+//   }, res => { ... });
+//
+
 var metaHeader = "context-headers";
 
-function init(options) {
-    if (options.metaHeader) {
-        metaHeader = options.metaHeader.toLowerCase();
-    }
+function using(metaHeaderName) {
+    metaHeader = metaHeaderName.toLowerCase();
 }
+exports.using = using;
 
 function from(req, headers) {
     headers = headers || {};
-    if (req.headers[metaHeader.toLowerCase()]) {
+   if (req.headers[metaHeader]) {
         headers[metaHeader] = req.headers[metaHeader];
         headers[metaHeader].split(",").forEach(function (header) {
             header = header.toLowerCase();
