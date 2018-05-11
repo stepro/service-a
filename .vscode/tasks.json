@@ -1,0 +1,46 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "azds: prelaunch",
+            "command": "azds",
+            "args": [
+                "up",
+                "--user-agent",
+                "vscode",
+                "--ports",
+                "58160:9229",
+                "--no-command"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "azds: preattach",
+            "command": "azds",
+            "args": [
+                "up",
+                "--user-agent",
+                "vscode",
+                "--config",
+                "develop.attach",
+                "--ports",
+                "58160:9229",
+                "--command",
+                "node_modules/.bin/nodemon",
+                "--",
+                "--inspect=0.0.0.0:9229",
+                "--nolazy",
+                "server.js"
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,5 +1,5 @@
-kind: helm-release
 apiVersion: 1.0
+kind: helm-release
 build:
   context: .
   dockerfile: Dockerfile
@@ -12,12 +12,15 @@ install:
     image:
       tag: $(tag)
       pullPolicy: Never
-    # This ingress section specifies whether VSCE should expose
+    disableProbes: true
+    # This ingress section specifies whether AZDS should expose
     # an endpoint like http://service-a.<guid>.<region>.aksapp.io
+    # or http://scott.s.service-a.<guid>.<region>.aksapp.io when
+    # working in a specific dev space 'scott'.
     ingress:
       enabled: true
       hosts:
-      - $(spacePrefix)service-a$(domainSuffix)
+      - $(spacePrefix)service-a$(hostSuffix)
       annotations:
         kubernetes.io/ingress.class: addon-http-application-routing
 configurations:
@@ -25,15 +28,15 @@ configurations:
     build:
       useGitIgnore: true
     container:
-      syncTarget: /app
       sync:
       - "!**/package.json"
-      iterate:
+      syncTarget: /app
+      refresh:
         processesToKill: [node]
   develop.attach:
     build:
       useGitIgnore: true
     container:
-      syncTarget: /app
       sync:
       - "!**/package.json"
+      syncTarget: /app

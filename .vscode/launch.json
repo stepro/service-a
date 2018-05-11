@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "azds: Launch Server",
+            "type": "node",
+            "request": "launch",
+            "protocol": "inspector",
+            "preLaunchTask": "azds: prelaunch",
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "azds",
+            "runtimeArgs": [
+                "exec",
+                "--user-agent",
+                "vscode",
+                "--restore-command",
+                "--",
+                "node",
+                "--inspect=0.0.0.0:9229",
+                "--inspect-brk",
+                "--nolazy",
+                "server.js"
+            ],
+            "address": "127.0.0.1",
+            "port": 58160,
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": "/app"
+        },
+        {
+            "name": "azds: Attach to Server",
+            "type": "node",
+            "request": "attach",
+            "protocol": "inspector",
+            "preLaunchTask": "azds: preattach",
+            "cwd": "${workspaceRoot}",
+            "address": "127.0.0.1",
+            "port": 58160,
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": "/app",
+            "restart": true
+        }
+    ]
+}
