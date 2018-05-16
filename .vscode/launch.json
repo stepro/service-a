@@ -16,7 +16,7 @@
                 "exec",
                 "--client",
                 "vscode",
-                "--resume-up",
+                "--on-exit-resume-up",
                 "--",
                 "node",
                 "--inspect=0.0.0.0:9229",
