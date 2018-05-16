@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "azds: Launch Server",
+            "name": "Launch Server (azds)",
             "type": "node",
             "request": "launch",
             "protocol": "inspector",
@@ -30,7 +30,7 @@
             "remoteRoot": "/app"
         },
         {
-            "name": "azds: Attach to Server",
+            "name": "Attach to Server (azds)",
             "type": "node",
             "request": "attach",
             "protocol": "inspector",
