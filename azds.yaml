@@ -27,7 +27,6 @@ configurations:
     build:
       useGitIgnore: true
     container:
-      disableProbes: true
       sync:
       - "!**/package.json"
       syncTarget: /app
@@ -37,7 +36,6 @@ configurations:
     build:
       useGitIgnore: true
     container:
-      disableProbes: true
       sync:
       - "!**/package.json"
       syncTarget: /app

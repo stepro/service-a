@@ -28,6 +28,7 @@
                 "vscode",
                 "--config",
                 "develop.attach",
+                "--no-health",
                 "--port",
                 "58160:9229",
                 "--detach-after",
