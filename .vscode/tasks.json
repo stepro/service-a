@@ -8,11 +8,11 @@
             "command": "azds",
             "args": [
                 "up",
-                "--user-agent",
+                "--client",
                 "vscode",
-                "--ports",
+                "--port",
                 "58160:9229",
-                "--no-command"
+                "--await-exec"
             ],
             "options": {
                 "cwd": "${workspaceRoot}"
@@ -24,12 +24,15 @@
             "command": "azds",
             "args": [
                 "up",
-                "--user-agent",
+                "--client",
                 "vscode",
                 "--config",
                 "develop.attach",
-                "--ports",
+                "--port",
                 "58160:9229",
+                "--detach-after",
+                "Debugger listening on",
+                "--keep-existing",
                 "--command",
                 "node_modules/.bin/nodemon",
                 "--",

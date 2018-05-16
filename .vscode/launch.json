@@ -14,9 +14,9 @@
             "runtimeExecutable": "azds",
             "runtimeArgs": [
                 "exec",
-                "--user-agent",
+                "--client",
                 "vscode",
-                "--restore-command",
+                "--resume-up",
                 "--",
                 "node",
                 "--inspect=0.0.0.0:9229",
