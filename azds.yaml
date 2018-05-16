@@ -12,11 +12,10 @@ install:
     image:
       tag: $(tag)
       pullPolicy: Never
-    disableProbes: true
     # This ingress section specifies whether AZDS should expose
     # an endpoint like http://service-a.<guid>.<region>.aksapp.io
-    # or http://scott.s.service-a.<guid>.<region>.aksapp.io when
-    # working in a specific dev space 'scott'.
+    # or http://<space>.s.service-a.<guid>.<region>.aksapp.io when
+    # working in a specific dev space.
     ingress:
       enabled: true
       hosts:
@@ -28,6 +27,7 @@ configurations:
     build:
       useGitIgnore: true
     container:
+      disableProbes: true
       sync:
       - "!**/package.json"
       syncTarget: /app
@@ -37,6 +37,7 @@ configurations:
     build:
       useGitIgnore: true
     container:
+      disableProbes: true
       sync:
       - "!**/package.json"
       syncTarget: /app
