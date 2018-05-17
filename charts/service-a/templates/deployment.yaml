@@ -27,7 +27,6 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          {{- if not .Values.disableProbes }}
           livenessProbe:
             httpGet:
               path: /
@@ -36,7 +35,6 @@ spec:
             httpGet:
               path: /
               port: http
-          {{- end }}
           env:
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
