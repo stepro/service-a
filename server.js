@@ -20,7 +20,10 @@ app.get('/api', function (req, res) {
     redis.incr('requestCount');
     request({
         uri: 'http://service-b',
-        headers: propagateHeaders.from(req)
+        headers: {
+            // propagate the dev space routing header
+            'azds-route-as': req.headers['azds-route-as']
+         }
     }, function (error, response, body) {
         res.send('Hello from service A container ' + os.hostname() + ' and ' + body);
     });
