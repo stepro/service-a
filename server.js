@@ -1,7 +1,6 @@
 var os = require('os');
 var express = require('express');
 var request = require('request');
-var propagateHeaders = require('./propagateHeaders');
 var redis = require('redis').createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, {
     auth_pass: process.env.REDIS_KEY,
     tls: {
