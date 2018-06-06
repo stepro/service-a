@@ -39,10 +39,10 @@ spec:
             {{- $root := . }}
             {{- range $ref, $values := .Values.secrets }}
             {{- range $key, $value := $values }}
-            - name: {{ $ref | upper }}_{{ $key | upper }}
+            - name: {{ $ref }}_{{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "service-a.fullname" $root }}-{{ $ref }}
+                  name: {{ template "service-a.fullname" $root }}-{{ $ref | lower }}
                   key: {{ $key }}
             {{- end }}
             {{- end }}

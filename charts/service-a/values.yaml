@@ -39,7 +39,7 @@ secrets: {}
   # ref: https://kubernetes.io/docs/concepts/configuration/secret/
   #
   # This creates a secret "mysecret" and injects "mypassword"
-  # as the environment variable MYSECRET_MYPASSWORD=password.
+  # as the environment variable mysecret_mypassword=password.
   # mysecret:
   #   mypassword: password
 resources: {}
