@@ -27,7 +27,6 @@
                 "--no-health-checks",
                 "--port=56927:9229",
                 "--sync-only",
-                "--detach-after=Debugger listening on ",
                 "--keep-alive",
                 "--command=node_modules/.bin/nodemon",
                 "--",
