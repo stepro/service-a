@@ -11,6 +11,7 @@
             "runtimeExecutable": "azds",
             "runtimeArgs": [
                 "exec",
+                "--client=vscode",
                 "--then-resume-up",
                 "--",
                 "node",
