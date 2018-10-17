@@ -1,27 +1,20 @@
-kind: helm-release
 apiVersion: 1.0
-build:
-  context: .
-  dockerfile: Dockerfile
-install:
-  chart: charts/service-a
-  values:
-  - values.dev.yaml?
-  - secrets.dev.yaml?
-  set:
-    image:
-      tag: $(tag)
-      pullPolicy: Never
-    ingress:
-      hosts:
-        # This expands to [<space>.s.]service-a.<guid>.<region>.aksapp.io
-        - $(spacePrefix)service-a$(hostSuffix)
-configurations:
-  develop:
-    build:
-      useGitIgnore: true
-    container:
-      sync:
-      - "!**/package.json"
-      refresh:
-        processesToKill: [node]
+kind: terraform
+builds:
+- name: service-a
+  image: node
+  commands:
+  - npm install
+  package:
+    type: zip
+    ignore:
+    - azds.yaml
+apply:
+  module: deployment
+  variables:
+    resource_group: $(resourceGroup)
+    default_location: $(location)
+push:
+- type: app-service-zip-deploy
+  package: service-a
+  resource: service_a
