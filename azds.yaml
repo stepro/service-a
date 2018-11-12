@@ -5,10 +5,6 @@ builds:
   image: node
   commands:
   - npm install
-  package:
-    type: zip
-    ignore:
-    - azds.yaml
 apply:
   module: deployment
   variables:
@@ -16,5 +12,6 @@ apply:
     default_location: $(location)
 push:
 - type: app-service-zip-deploy
-  package: service-a
+  ignore:
+  - azds.yaml
   resource: service_a
