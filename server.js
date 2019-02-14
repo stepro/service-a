@@ -1,40 +1,44 @@
 var os = require('os');
 var express = require('express');
 var request = require('request');
-var redis = require('redis').createClient(process.env.REDIS_PORT, process.env.REDIS_HOST, {
-    auth_pass: process.env.REDIS_KEY,
-    tls: {
-        servername: process.env.REDIS_HOST
-    }
-});
+var redis = require('redis');
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
+if (process.env.REDIS_HOST) {
+    cache = redis.createClient({
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT,
+        password: process.env.REDIS_PASSWORD
+    });
+}
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/api', function (req, res) {
-    redis.incr('requestCount');
+    if (cache) {
+        cache.incr('requestCount');
+    }
     request({
         uri: 'http://service-b',
-        headers: {
-            // propagate the dev space routing header
-            'azds-route-as': req.headers['azds-route-as']
-         }
     }, function (error, response, body) {
         res.send('Hello from service A container ' + os.hostname() + ' and ' + body);
     });
 });
 
 app.get('/metrics', function (req, res) {
-    redis.get('requestCount', function (err, reply) {
-        res.send({ requestCount: reply });
-    });
+    if (!cache) {
+        res.send({ requestCount: -1 });
+    } else {
+        cache.get('requestCount', function (err, reply) {
+            res.send({ requestCount: reply });
+        });
+    }
 });
 
-var port = 80;
+var port = process.env.PORT || 80;
 var server = app.listen(port, function () {
     console.log('Listening on port ' + port);
 });

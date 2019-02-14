@@ -2,16 +2,16 @@
   "name": "service-a",
   "version": "0.1.0",
   "devDependencies": {
-    "nodemon": "^1.17.5"
+    "nodemon": "^1.18.10"
   },
   "dependencies": {
-    "express": "^4.16.2",
+    "express": "^4.16.4",
     "redis": "^2.8.0",
-    "request": "^2.83.0"
+    "request": "^2.88.0"
   },
   "main": "server.js",
   "scripts": {
-    "watch": "nodemon --inspect --nolazy",
+    "dev": "nodemon --inspect --nolazy",
     "start": "node server.js"
   }
 }
