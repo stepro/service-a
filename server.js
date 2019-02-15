@@ -1,16 +1,15 @@
 var os = require('os');
 var express = require('express');
 var request = require('request');
-var redis = require('redis');
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
 var cache = null;
-cache = redis.createClient({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-    password: process.env.REDIS_PASSWORD
-});
+// cache = redis.createClient({
+//     host: process.env.REDIS_HOST,
+//     port: process.env.REDIS_PORT,
+//     password: process.env.REDIS_PASSWORD
+// });
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
