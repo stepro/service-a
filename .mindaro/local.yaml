@@ -1,9 +1,0 @@
-bindings:
-- type: container
-  module: ..\..\..\go\src\github.com\stepro\mindaro\modules\local\container
-- type: mongo
-  module: ..\..\..\go\src\github.com\stepro\mindaro\modules\local\mongo
-- type: redis
-  module: ..\..\..\go\src\github.com\stepro\mindaro\modules\local\redis
-- type: static-website
-  module: ..\..\..\go\src\github.com\stepro\mindaro\modules\local\static-website

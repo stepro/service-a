@@ -6,11 +6,11 @@ var redis = require('redis');
 var app = express();
 app.use(express.static(__dirname + '/public'));
 var cache = null;
-// redis.createClient({
-//     host: process.env.REDIS_HOST,
-//     port: process.env.REDIS_PORT,
-//     password: process.env.REDIS_PASSWORD
-// });
+cache = redis.createClient({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    password: process.env.REDIS_PASSWORD
+});
 
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
@@ -20,11 +20,11 @@ app.get('/api', function (req, res) {
     if (cache) {
         cache.incr('requestCount');
     }
-    request({
-        uri: 'http://service-b',
-    }, function (error, response, body) {
-        res.send('Hello from service A container ' + os.hostname() + ' and ' + body);
-    });
+    // request({
+    //     uri: 'http://' + process.env.SERVICE_B_HOST,
+    // }, function (error, response, body) {
+        res.send('Hello from service A container ' + os.hostname());
+    // });
 });
 
 app.get('/metrics', function (req, res) {
