@@ -22,7 +22,7 @@ app.get('/api', function (req, res) {
     // request({
     //     uri: 'http://' + process.env.SERVICE_B_HOST,
     // }, function (error, response, body) {
-        res.send('Hello from service A container ' + os.hostname());
+        res.send('Hello from service A on ' + os.hostname());
     // });
 });
 
