@@ -1,0 +1,7 @@
+.dockerignore
+.gitignore
+.mindaro
+.vscode
+Dockerfile
+mindaro.yaml
+node_modules
