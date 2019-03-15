@@ -1,4 +1,0 @@
-environments:
-  dev: github.com/stepro/demo-app/dev.yaml
-  local: github.com/stepro/como/environments/local.yaml
-  prod: github.com/stepro/demo-app/prod.yaml
