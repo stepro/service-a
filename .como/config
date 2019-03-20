@@ -1,4 +1,3 @@
 environments:
   local: github.com/stepro/como/environments/local.yaml
   kube: github.com/stepro/como/environments/kubernetes.yaml
-  aci: github.com/stepro/demo-app/dev.yaml
