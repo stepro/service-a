@@ -1,0 +1,10 @@
+dependencies:
+  service-b:
+    ref: stephpr/service-b
+  redis:
+    type: redis
+environment:
+  SERVICE_B_HOST: $(service-b.host)
+  REDIS_HOST: $(redis.host)
+  REDIS_PORT: $(redis.port)
+  REDIS_PASSWORD: $(redis.password)
