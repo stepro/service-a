@@ -1,7 +1,7 @@
+.como
 .dockerignore
 .gitignore
-.mindaro
 .vscode
+como.yaml
 Dockerfile
-mindaro.yaml
 node_modules
